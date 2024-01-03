@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build-ghpages": "ng build --base-href=basic-site/"
+    "build-ghpages": "ng build --base-href=./"
   },
   "private": true,
   "dependencies": {
