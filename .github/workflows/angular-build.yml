@@ -29,19 +29,19 @@ jobs:
     - name: Build
       run: npm run build-ghpages
 
-    - name: pwd
-      run: pwd
-
-    - name: ls
-      run: ls
-
     - name: Setup Pages
       uses: actions/configure-pages@v4
+
+    - name: pwd2
+      run: pwd
+
+    - name: ls2
+      run: ls
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: './dist/browser'
+        path: 'wwwroot'
 
     - name: Deploy to GitHub Pages
       id: deployment
