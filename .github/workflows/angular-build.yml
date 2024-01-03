@@ -29,6 +29,12 @@ jobs:
     - name: Build
       run: npm run build-ghpages
 
+    - name: pwd
+      run: pwd
+
+    - name: ls
+      run: ls
+
     - name: Setup Pages
       uses: actions/configure-pages@v4
 
