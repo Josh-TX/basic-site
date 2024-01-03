@@ -7,9 +7,6 @@ on:
     
 jobs:
   deploy:
-    defaults:
-      run:
-        working-directory: ./my-angular-app
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -25,9 +22,11 @@ jobs:
 
     - name: Install dependencies
       run: npm install
+        working-directory: ./my-angular-app
 
     - name: Build
       run: npm run build-ghpages
+        working-directory: ./my-angular-app
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
@@ -41,7 +40,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: 'wwwroot'
+        path: 'my-angular-app/dist/browser'
 
     - name: Deploy to GitHub Pages
       id: deployment
