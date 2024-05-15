@@ -1,0 +1,24 @@
+name: Append-release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload index.html
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: https://uploads.github.com/repos/Josh-TX/basic-site/releases/155794594/assets
+        asset_name: readme.txt
+        asset_path: README.md
+        asset_content_type: text/plain
