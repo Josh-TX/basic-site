@@ -11,6 +11,10 @@ on:
         description: 'The tag name'
         required: true
         default: 'myTagName'
+
+permissions:
+  contents: write
+  
 jobs:
   deploy:
     environment:
