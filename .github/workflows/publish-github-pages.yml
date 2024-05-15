@@ -1,9 +1,6 @@
 name: Build and deploy angular app to GitHub Pages
 
 on:
-  push:
-    branches:
-    - main
   workflow_dispatch:
   
 permissions:
