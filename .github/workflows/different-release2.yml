@@ -14,7 +14,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    steps:
     - name: Upload index.html
       uses: actions/upload-release-asset@v1
       env:
