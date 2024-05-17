@@ -3,14 +3,9 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
-      tagName:
-        description: 'The tag name'
+      SemVer:
+        description: 'should be semantic versioning'
         required: true
-        default: 'myTagName'
-      releaseName:
-        description: 'The tag name'
-        required: true
-        default: 'myTagName'
 
 permissions:
   contents: write
@@ -22,6 +17,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+    - name: Validate SemVer input
+      run: |
+        VERSION=${{ github.event.inputs.SemVer }}
+        if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Invalid version format: $VERSION"
+          exit 1
+        else
+          echo "Valid version format: $VERSION"
+        fi
+
     - name: Checkout
       uses: actions/checkout@v2
 
@@ -44,12 +49,11 @@ jobs:
       with:
         draft: false
         prerelease: false
-        release_name: ${{ github.event.inputs.releaseName }}
-        tag_name: ${{ github.event.inputs.tagName }}
+        release_name: release v${{ github.event.inputs.SemVer }}
+        tag_name: v${{ github.event.inputs.SemVer }}
         body_path: CHANGELOG.md
       env:
         GITHUB_TOKEN: ${{ github.token }}
-
 
     - name: Upload index.html
       uses: actions/upload-release-asset@v1
