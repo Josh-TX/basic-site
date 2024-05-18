@@ -120,9 +120,8 @@ jobs:
         path: dist/
         pattern: my-angular-app*
 
-    # - name: Echo out 
-    #   run: ls -al
-    #   working-directory: ./dist
+    - run: ls -al
+      working-directory: ./dist
 
     # - name: Rename WIN file
     #   run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
