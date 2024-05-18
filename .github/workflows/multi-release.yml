@@ -9,9 +9,6 @@ on:
   
 jobs:
   build-angular:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -35,15 +32,6 @@ jobs:
       with:
         name: angular-files
         path: 'my-angular-app/dist/browser'
-
-    - name: Download build artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: angular-files
-        path: dist/
-
-    - name: Echo Run ID
-      run: echo ${{ github.run_id }}
         
   deploy-pages:
     needs: build-angular
@@ -51,15 +39,8 @@ jobs:
       pages: write
       contents: none
       id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Echo Run ID
-      run: echo ${{ github.run_id }}
     - name: Download build artifacts
       uses: actions/download-artifact@v3
       with:
