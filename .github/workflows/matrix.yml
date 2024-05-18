@@ -116,15 +116,20 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         path: dist/
+        pattern: my-angular-app*
 
     - name: Echo out 
       run: ls
       working-directory: ./dist
 
     - name: Rename WIN file
-      run: mv 'dist/${{ env.WIN_FILENAME }}' my-angular-app v${{ github.event.inputs.SemVer }}.exe
+      run: mv 'dist/${{ env.WIN_FILENAME }}' 'assets/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
     - name: Rename WIN-P file
-      run: mv 'dist/${{ env.WIN-P_FILENAME }}' 'my-angular-app v${{ github.event.inputs.SemVer }} Windows Portable.exe'
+      run: mv 'dist/${{ env.WIN-P_FILENAME }}' 'assets/my-angular-app v${{ github.event.inputs.SemVer }} Portable.exe'
+    - name: Rename LIN file
+      run: mv 'dist/${{ env.LIN_FILENAME }}' 'assets/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
+    - name: Rename MAC file
+      run: mv 'dist/${{ env.MAC_FILENAME }}' 'my-angular-app-v${{ github.event.inputs.SemVer }}-arm64.dmg'
 
     - name: Create Release (softprops)
       uses: softprops/action-gh-release@v2
