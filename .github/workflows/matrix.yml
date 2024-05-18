@@ -4,9 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       SemVer:
-        description: 'should be semantic versioning'
+        description: 'Semantic Version of the release'
         required: true
-  
+
+env:
+  #these should match the output of the electron build
+  WIN_FILENAME: my-angular-app Setup 0.0.0.exe
+  WIN-P_FILENAME: my-angular-app 0.0.0.exe
+  LIN_FILENAME: my-angular-app-0.0.0.AppImage
+  MAC_FILENAME: my-angular-app-0.0.0.dmg
+
+
 jobs:
   build-angular:
     runs-on: ubuntu-latest
@@ -38,9 +46,9 @@ jobs:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
-        #- macOS-latest
-        - windows-latest
+        #- ubuntu-latest
+        - macOS-latest
+        #- windows-latest
 
     runs-on: ${{ matrix.os }}
 
@@ -67,58 +75,67 @@ jobs:
       run: npm run publish-electron
       working-directory: my-angular-app
 
-    - name: Echo out windows
-      if: matrix.os == 'windows-latest'
+    - name: Echo out mac
+      if: matrix.os == 'macOS-latest'
       run: dir
-      working-directory: my-angular-app/out
-
-    - name: Echo out linux
-      if: matrix.os == 'ubuntu-latest'
-      run: ls
       working-directory: my-angular-app/out
 
     - name: Upload Windows artifact
       if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v3
       with:
-        name: windows.exe
-        path: 'my-angular-app/out/my-angular-app Setup 0.0.0.exe'
+        name: ${{ env.WIN_FILENAME }}
+        path: 'my-angular-app/out/${{ env.WIN_FILENAME }}'
 
     - name: Upload Windows-Portable artifact
       if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v3
       with:
-        name: windows-portable.exe
-        path: 'my-angular-app/out/my-angular-app 0.0.0.exe'
+        name: ${{ env.WIN-P_FILENAME }}
+        path: 'my-angular-app/out/${{ env.WIN-P_FILENAME }}'
 
     - name: Upload Linux artifact
       if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v3
       with:
-        name: linux.AppImage
-        path: 'my-angular-app/out/my-angular-app-0.0.0.AppImage'
+        name: ${{ env.LIN_FILENAME }}
+        path: 'my-angular-app/out/${{ env.LIN_FILENAME }}'
+    
+    - name: Upload Mac artifact
+      if: matrix.os == 'macOS-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.MAC_FILENAME }}
+        path: 'my-angular-app/out/${{ env.MAC_FILENAME }}'
 
   release: 
     needs: build-electron
     runs-on: ubuntu-latest
     steps:
-    - name: Download Windows artifact
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: CHANGELOG.md
+
+    - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
-        name: windows.exe
         path: dist/
 
-    - name: Download Windows-Portable artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: windows-portable.exe
-        path: dist/
-
-    - name: Download Linux artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: linux.AppImage
-        path: dist/
     - name: Echo out 
       run: ls
       working-directory: dist
+
+    - name: Rename WIN file
+      run: 'dist/${{ env.WIN_FILENAME }}' my-angular-app v${{ github.event.inputs.SemVer }} Windows.exe
+
+    - name: Rename WIN=P file
+      run: 'dist/${{ env.WIN-P_FILENAME }}' my-angular-app v${{ github.event.inputs.SemVer }} Windows Portable.exe
+
+    - name: Create Release (softprops)
+      uses: softprops/action-gh-release@v2
+      with:
+        name: Release v${{ github.event.inputs.SemVer }}
+        tag_name: v${{ github.event.inputs.SemVer }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body_path: CHANGELOG.md
+        files: dist/*
