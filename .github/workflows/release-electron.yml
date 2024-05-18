@@ -1,0 +1,70 @@
+name: Release Electron
+
+on:
+  workflow_dispatch:
+    inputs:
+      SemVer:
+        description: 'should be semantic versioning'
+        required: true
+
+permissions:
+  contents: write
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Validate SemVer input
+      run: |
+        VERSION=${{ github.event.inputs.SemVer }}
+        if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "Invalid version format: $VERSION"
+          exit 1
+        else
+          echo "Valid version format: $VERSION"
+        fi
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./my-angular-app
+
+    - name: Build Angular
+      run: npm run build-ghpages
+      working-directory: ./my-angular-app
+
+    - name: Publish Electron
+      run: npm run publish-electron
+      working-directory: ./my-angular-app
+
+    - name: create release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: false
+        release_name: release v${{ github.event.inputs.SemVer }}
+        tag_name: v${{ github.event.inputs.SemVer }}
+        body_path: CHANGELOG.md
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Upload index.html
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_name: my-index.html
+        asset_path: my-angular-app/out/my-angular-app 0.0.0.exe
+        asset_content_type: text/html
+    - name: Echo out
+      run: ls -la
+      working-directory: ./my-angular-app/out
