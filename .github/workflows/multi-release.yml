@@ -41,7 +41,9 @@ jobs:
       with:
         name: angular-files
         path: 'my-angular-app/dist/browser'
+        
   deploy-pages:
+    needs: build-angular
 
     environment:
       name: github-pages
