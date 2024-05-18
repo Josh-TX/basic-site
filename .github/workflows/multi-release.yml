@@ -39,6 +39,7 @@ jobs:
       pages: write
       id-token: write
     environment:
+      name: random-name
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
