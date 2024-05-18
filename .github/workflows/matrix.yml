@@ -12,7 +12,7 @@ env:
   WIN_FILENAME: my-angular-app Setup 0.0.0.exe
   WIN-P_FILENAME: my-angular-app 0.0.0.exe
   LIN_FILENAME: my-angular-app-0.0.0.AppImage
-  MAC_FILENAME: my-angular-app-0.0.0.dmg
+  MAC_FILENAME: my-angular-app-0.0.0-arm64.dmg
 
 
 jobs:
@@ -46,9 +46,9 @@ jobs:
     strategy:
       matrix:
         os:
-        #- ubuntu-latest
+        - ubuntu-latest
         - macOS-latest
-        #- windows-latest
+        - windows-latest
 
     runs-on: ${{ matrix.os }}
 
@@ -75,10 +75,6 @@ jobs:
       run: npm run publish-electron
       working-directory: my-angular-app
 
-    - name: Echo out mac
-      if: matrix.os == 'macOS-latest'
-      run: dir
-      working-directory: my-angular-app/out
 
     - name: Upload Windows artifact
       if: matrix.os == 'windows-latest'
