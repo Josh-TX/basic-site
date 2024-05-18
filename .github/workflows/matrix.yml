@@ -99,7 +99,7 @@ jobs:
     
     - name: Upload Mac artifact
       if: matrix.os == 'macOS-latest'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.MAC_FILENAME }}
         path: 'my-angular-app/out/${{ env.MAC_FILENAME }}'
@@ -115,27 +115,27 @@ jobs:
         sparse-checkout: CHANGELOG.md
 
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: dist/
         pattern: my-angular-app*
 
-    - name: Echo out 
-      run: ls
-      working-directory: ./dist
+    # - name: Echo out 
+    #   run: ls -al
+    #   working-directory: ./dist
 
-    - name: Rename WIN file
-      run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
-    - name: Rename WIN-P file
-      run: mv 'dist/${{ env.WIN-P_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Portable.exe'
-    - name: Rename LIN file
-      run: mv 'dist/${{ env.LIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
-    - name: Rename MAC file
-      run: mv 'dist/${{ env.MAC_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-arm64.dmg'
+    # - name: Rename WIN file
+    #   run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
+    # - name: Rename WIN-P file
+    #   run: mv 'dist/${{ env.WIN-P_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Portable.exe'
+    # - name: Rename LIN file
+    #   run: mv 'dist/${{ env.LIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
+    # - name: Rename MAC file
+    #   run: mv 'dist/${{ env.MAC_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-arm64.dmg'
 
-    - name: Echo out 
-      run: ls
-      working-directory: dist
+    # - name: Echo out 
+    #   run: ls
+    #   working-directory: dist
 
     - name: Create Release (softprops)
       uses: softprops/action-gh-release@v2
