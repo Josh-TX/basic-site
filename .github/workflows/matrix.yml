@@ -121,4 +121,4 @@ jobs:
         path: dist/
     - name: Echo out 
       run: ls
-      working-directory: /dist
+      working-directory: dist
