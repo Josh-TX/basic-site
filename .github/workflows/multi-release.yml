@@ -6,19 +6,13 @@ on:
       SemVer:
         description: 'should be semantic versioning'
         required: true
-
-permissions:
-  contents: write
   
 jobs:
   build-angular:
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -53,14 +47,15 @@ jobs:
         
   deploy-pages:
     needs: build-angular
-
+    permissions:
+      pages: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-      
     runs-on: ubuntu-latest
-
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Echo Run ID
       run: echo ${{ github.run_id }}
     - name: Download build artifacts
