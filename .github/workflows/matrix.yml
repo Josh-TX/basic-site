@@ -91,7 +91,7 @@ jobs:
       with:
         name: windows.exe
         path: dist/
-    steps:
+        
     - name: Download Windows-Portable artifact
       uses: actions/download-artifact@v3
       with:
