@@ -44,20 +44,33 @@ jobs:
       run: dir
       working-directory: ./my-angular-app/out
 
-    - name: create release
-      uses: actions/create-release@v1
-      id: create_release
+    - name: Create Release (softprops)
+      uses: softprops/action-gh-release@v2
       with:
-        draft: false
-        prerelease: false
-        release_name: release v${{ github.event.inputs.SemVer }}
+        name: Release v${{ github.event.inputs.SemVer }}
         tag_name: v${{ github.event.inputs.SemVer }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         body_path: CHANGELOG.md
+        files: my-angular-app/out/*
 
-    - name: Upload index.html
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_name: my-angular-app v${{ github.event.inputs.SemVer }}.exe
-        asset_path: my-angular-app/out/my-angular-app 0.0.0.exe
-        asset_content_type: text/html
+    # - name: create release
+    #   uses: actions/create-release@v1
+    #   id: create_release
+    #   with:
+    #     draft: false
+    #     prerelease: false
+    #     release_name: release v${{ github.event.inputs.SemVer }}
+    #     tag_name: v${{ github.event.inputs.SemVer }}
+    #     body_path: CHANGELOG.md
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+
+    # - name: Upload index.html
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_name: my-angular-app v${{ github.event.inputs.SemVer }}.exe
+    #     asset_path: my-angular-app/out/my-angular-app 0.0.0.exe
+    #     asset_content_type: text/html
