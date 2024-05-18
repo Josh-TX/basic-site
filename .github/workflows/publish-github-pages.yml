@@ -28,23 +28,19 @@ jobs:
       working-directory: ./my-angular-app
 
     - name: Build
-      run: npm run build-ghpages
+      run: npm run build
       working-directory: ./my-angular-app
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
 
-    - name: pwd2
-      run: pwd
-
-    - name: ls2
-      run: ls
-
-    - name: Upload artifact
+    - name: Upload Pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
+        name: angular-files
         path: 'my-angular-app/dist/browser'
 
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+      artifact_name: angular-files
