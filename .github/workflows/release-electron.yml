@@ -53,13 +53,9 @@ jobs:
         release_name: release v${{ github.event.inputs.SemVer }}
         tag_name: v${{ github.event.inputs.SemVer }}
         body_path: CHANGELOG.md
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Upload index.html
       uses: actions/upload-release-asset@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_name: my-angular-app v${{ github.event.inputs.SemVer }}.exe
