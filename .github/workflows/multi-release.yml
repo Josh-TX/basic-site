@@ -37,7 +37,6 @@ jobs:
     needs: build-angular
     permissions:
       pages: write
-      contents: none
       id-token: write
     environment:
       url: ${{ steps.deployment.outputs.page_url }}
