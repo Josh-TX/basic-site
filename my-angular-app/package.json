@@ -1,14 +1,20 @@
 {
   "name": "my-angular-app",
   "version": "0.0.0",
+  "description": "test app",
+  "author": "Josh-TX",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build-ghpages": "ng build --base-href=./"
+    "build-ghpages": "ng build --base-href=./",
+    "start-electron": "electron .",
+    "install-deps": "electron-builder install-app-deps",
+    "publish-electron": "electron-builder"
   },
+  "main": "electron-app.js",
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.0",
@@ -28,6 +34,8 @@
     "@angular/cli": "^17.0.8",
     "@angular/compiler-cli": "^17.0.0",
     "@types/jasmine": "~5.1.0",
+    "electron": "^30.0.2",
+    "electron-builder": "^24.13.3",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -35,5 +43,26 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.2.2"
+  },
+  "build": {
+    "appId": "com.josh-tx.basic-site",
+    "directories": {
+      "output": "out"
+    },
+    "mac": {
+      "category": "public.app-category.utilities"
+      
+    },
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "icon": "build/icons/win/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icons/win/icon.ico"
+    }
   }
 }

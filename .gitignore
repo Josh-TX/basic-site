@@ -1,6 +1,4 @@
-/AspNetCore-Server/obj
-/AspNetCore-Server/bin
-/AspNetCore-Server/wwwroot
-
-/Angular-UI/node_modules
-/Angular-UI/.angular
+my-angular-app/node_modules
+my-angular-app/dist
+my-angular-app/.angular
+my-angular-app/out
