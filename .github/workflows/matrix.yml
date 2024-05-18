@@ -48,6 +48,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: angular-files
+        path: my-angular-app/dist/browser/
+
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
@@ -72,16 +78,26 @@ jobs:
       working-directory: my-angular-app/out
 
     - name: Upload Windows artifact
+      if: matrix.os == 'windows-latest
       uses: actions/upload-artifact@v3
       with:
         name: windows.exe
-        path: 'my-angular-app/out/my-angular-app 0.0.0 Setup.exe'
+        path: 'my-angular-app/out/my-angular-app Setup 0.0.0.exe'
 
     - name: Upload Windows-Portable artifact
+      if: matrix.os == 'windows-latest
       uses: actions/upload-artifact@v3
       with:
         name: windows-portable.exe
         path: 'my-angular-app/out/my-angular-app 0.0.0.exe'
+
+    - name: Upload Linux artifact
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: linux.AppImage
+        path: 'my-angular-app/out/my-angular-app-0.0.0.AppImage'
+
   release: 
     needs: build-electron
     runs-on: ubuntu-latest
@@ -96,6 +112,12 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: windows-portable.exe
+        path: dist/
+
+    - name: Download Linux artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: linux.AppImage
         path: dist/
     - name: Echo out 
       run: ls
