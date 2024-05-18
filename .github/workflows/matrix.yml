@@ -124,13 +124,9 @@ jobs:
     - name: Echo out 
       run: ls
       working-directory: ./dist
-
-
-
-    - name: Rename WIN file
-      run: 'dist/${{ env.WIN_FILENAME }}' 'my-angular-app v${{ github.event.inputs.SemVer }} Windows.exe'
-
-    - name: Rename WIN=P file
+# - name: Rename WIN file
+#   run: 'dist/${{ env.WIN_FILENAME }}' my-angular-app v${{ github.event.inputs.SemVer }}.exe
+    - name: Rename WIN-P file
       run: 'dist/${{ env.WIN-P_FILENAME }}' 'my-angular-app v${{ github.event.inputs.SemVer }} Windows Portable.exe'
 
     - name: Create Release (softprops)
