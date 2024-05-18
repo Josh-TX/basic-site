@@ -78,14 +78,14 @@ jobs:
       working-directory: my-angular-app/out
 
     - name: Upload Windows artifact
-      if: matrix.os == 'windows-latest
+      if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v3
       with:
         name: windows.exe
         path: 'my-angular-app/out/my-angular-app Setup 0.0.0.exe'
 
     - name: Upload Windows-Portable artifact
-      if: matrix.os == 'windows-latest
+      if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v3
       with:
         name: windows-portable.exe
