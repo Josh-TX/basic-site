@@ -1,0 +1,102 @@
+name: Matrix
+
+on:
+  workflow_dispatch:
+    inputs:
+      SemVer:
+        description: 'should be semantic versioning'
+        required: true
+  
+jobs:
+  build-angular:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./my-angular-app
+
+    - name: Build
+      run: npm run build
+      working-directory: ./my-angular-app
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: angular-files
+        path: 'my-angular-app/dist/browser'
+  build-electron:
+    needs: build-angular
+
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+        #- macOS-latest
+        - windows-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install --only=dev
+      working-directory: /my-angular-app
+
+    - name: Build Electron
+      run: npm run publish-electron
+      working-directory: /my-angular-app
+
+    - name: Echo out windows
+      if: matrix.os == 'windows-latest'
+      run: dir
+      working-directory: /my-angular-app/out
+
+    - name: Echo out linux
+      if: matrix.os == 'ubuntu-latest'
+      run: ls
+      working-directory: /my-angular-app/out
+
+    - name: Upload Windows artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows.exe
+        path: 'my-angular-app/out/my-angular-app 0.0.0 Setup.exe'
+
+    - name: Upload Windows-Portable artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-portable.exe
+        path: 'my-angular-app/out/my-angular-app 0.0.0.exe'
+  release: 
+    needs: build-electron
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Windows artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: windows.exe
+        path: dist/
+    steps:
+    - name: Download Windows-Portable artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: windows-portable.exe
+        path: dist/
+    - name: Echo out 
+      run: ls
+      working-directory: /dist
