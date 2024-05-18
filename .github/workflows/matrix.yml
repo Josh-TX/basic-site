@@ -107,6 +107,8 @@ jobs:
   release: 
     needs: build-electron
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
       with:
@@ -130,6 +132,10 @@ jobs:
       run: mv 'dist/${{ env.LIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
     - name: Rename MAC file
       run: mv 'dist/${{ env.MAC_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-arm64.dmg'
+
+    - name: Echo out 
+      run: ls
+      working-directory: dist
 
     - name: Create Release (softprops)
       uses: softprops/action-gh-release@v2
