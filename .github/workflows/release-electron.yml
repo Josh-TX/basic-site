@@ -41,7 +41,7 @@ jobs:
       working-directory: ./my-angular-app
 
     - name: Echo out
-      run: ls -la
+      run: dir
       working-directory: ./my-angular-app/out
 
     - name: create release
