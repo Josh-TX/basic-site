@@ -118,51 +118,47 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         path: dist
-    - run: ls -al
-      working-directory: dist
-
-    - run: ls -al dist/lin
+    - run: ls -l dist
 
     # - name: Rename WIN file
     #   run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
     # - name: Rename WIN-P file
     #   run: mv 'dist/${{ env.WIN-P_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Portable.exe'
-    # - name: Rename LIN file
-    #   run: mv 'dist/${{ env.LIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
+    - name: Rename LIN file
+      run: mv 'dist/lin/${{ env.LIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
     # - name: Rename MAC file
     #   run: mv 'dist/${{ env.MAC_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-arm64.dmg'
 
-    # - name: Echo out 
-    #   run: ls
-    #   working-directory: dist
+    - name: Echo out 
+      run: ls -l dist
 
-    # - name: Create Release (softprops)
-    #   uses: softprops/action-gh-release@v2
-    #   with:
-    #     name: Release v${{ github.event.inputs.SemVer }}
-    #     tag_name: v${{ github.event.inputs.SemVer }}
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     body_path: CHANGELOG.md
-    #     files: dist/*
-
-    - name: create release
-      uses: actions/create-release@v1
-      id: create_release
+    - name: Create Release (softprops)
+      uses: softprops/action-gh-release@v2
       with:
-        draft: false
-        prerelease: false
-        release_name: release v${{ github.event.inputs.SemVer }}
+        name: Release v${{ github.event.inputs.SemVer }}
         tag_name: v${{ github.event.inputs.SemVer }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         body_path: CHANGELOG.md
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+        files: dist/*
 
-    - name: Upload Linux AppImage
-      uses: actions/upload-release-asset@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_name: my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage
-        asset_path: dist/lin/${{ env.LIN_FILENAME }}
-        asset_content_type: application/vnd.appimage
+    # - name: create release
+    #   uses: actions/create-release@v1
+    #   id: create_release
+    #   with:
+    #     draft: false
+    #     prerelease: false
+    #     release_name: release v${{ github.event.inputs.SemVer }}
+    #     tag_name: v${{ github.event.inputs.SemVer }}
+    #     body_path: CHANGELOG.md
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+
+    # - name: Upload Linux AppImage
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_name: my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage
+    #     asset_path: dist/lin/${{ env.LIN_FILENAME }}
+    #     asset_content_type: application/vnd.appimage
