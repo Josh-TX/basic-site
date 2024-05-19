@@ -119,14 +119,15 @@ jobs:
         path: dist
     - run: ls -l dist
 
+    #the release action replaces spaces with periods, so might as well use dashes
     - name: Rename WIN file
-      run: mv 'dist/win/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
+      run: mv 'dist/win/${{ env.WIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-Windows-Setup.exe'
     - name: Rename WIN-P file
-      run: mv 'dist/win-p/${{ env.WIN-P_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Portable.exe'
+      run: mv 'dist/win-p/${{ env.WIN-P_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-Windows-Portable.exe'
     - name: Rename LIN file
       run: mv 'dist/lin/${{ env.LIN_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage'
     - name: Rename MAC file
-      run: mv 'dist/mac/${{ env.MAC_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-arm64.dmg'
+      run: mv 'dist/mac/${{ env.MAC_FILENAME }}' 'dist/my-angular-app-v${{ github.event.inputs.SemVer }}-Mac-arm64.dmg'
 
     - name: Echo out 
       run: ls -l dist
