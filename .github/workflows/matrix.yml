@@ -118,7 +118,6 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: /dist
-        pattern: my-angular-app*
     - run: ls -al
       working-directory: /dist
 
