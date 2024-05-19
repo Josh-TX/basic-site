@@ -155,12 +155,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
-    - name: Upload windows
+    - name: Upload Linux AppImage
       uses: actions/upload-release-asset@v1
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_name: my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage
-        asset_path: dist/${{ env.MAC_FILENAME }}
+        asset_path: dist/${{ env.LIN_FILENAME }}
         asset_content_type: application/vnd.appimage
