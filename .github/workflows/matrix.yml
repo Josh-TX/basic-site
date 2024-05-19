@@ -47,8 +47,8 @@ jobs:
       matrix:
         os:
         - ubuntu-latest
-        - macOS-latest
-        - windows-latest
+        #- macOS-latest
+        #- windows-latest
 
     runs-on: ${{ matrix.os }}
 
@@ -117,11 +117,10 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        path: dist/
+        path: /dist
         pattern: my-angular-app*
-
     - run: ls -al
-      working-directory: ./dist
+      working-directory: /dist
 
     # - name: Rename WIN file
     #   run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
@@ -143,4 +142,26 @@ jobs:
         tag_name: v${{ github.event.inputs.SemVer }}
         token: ${{ secrets.GITHUB_TOKEN }}
         body_path: CHANGELOG.md
-        files: dist/*
+        files: /dist/*
+
+    # - name: create release
+    #   uses: actions/create-release@v1
+    #   id: create_release
+    #   with:
+    #     draft: false
+    #     prerelease: false
+    #     release_name: release v${{ github.event.inputs.SemVer }}
+    #     tag_name: v${{ github.event.inputs.SemVer }}
+    #     body_path: CHANGELOG.md
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+
+    # - name: Upload index.html
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_name: my-angular-app v${{ github.event.inputs.SemVer }}.exe
+    #     asset_path: my-angular-app/out/my-angular-app 0.0.0.exe
+    #     asset_content_type: text/html
