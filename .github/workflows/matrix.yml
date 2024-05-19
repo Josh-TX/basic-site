@@ -98,7 +98,7 @@ jobs:
     
     - name: Upload Mac artifact
       if: matrix.os == 'macOS-latest'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: mac
         path: 'my-angular-app/out/${{ env.MAC_FILENAME }}'
