@@ -121,6 +121,9 @@ jobs:
     - run: ls -al
       working-directory: dist
 
+    - run: ls -al 
+      working-directory: dist ${{ env.LIN_FILENAME }}
+
     # - name: Rename WIN file
     #   run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
     # - name: Rename WIN-P file
@@ -162,5 +165,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_name: my-angular-app-v${{ github.event.inputs.SemVer }}.AppImage
-        asset_path: dist/${{ env.LIN_FILENAME }}
+        asset_path: dist/${{ env.LIN_FILENAME }}/${{ env.LIN_FILENAME }}
         asset_content_type: application/vnd.appimage
