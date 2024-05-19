@@ -117,9 +117,9 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
-        path: /dist
+        path: dist
     - run: ls -al
-      working-directory: /dist
+      working-directory: dist
 
     # - name: Rename WIN file
     #   run: mv 'dist/${{ env.WIN_FILENAME }}' 'dist/my-angular-app v${{ github.event.inputs.SemVer }} Setup.exe'
@@ -141,7 +141,7 @@ jobs:
         tag_name: v${{ github.event.inputs.SemVer }}
         token: ${{ secrets.GITHUB_TOKEN }}
         body_path: CHANGELOG.md
-        files: /dist/*
+        files: dist/*
 
     # - name: create release
     #   uses: actions/create-release@v1
