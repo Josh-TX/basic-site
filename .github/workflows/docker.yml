@@ -14,10 +14,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@main
       with:
         name: joshtxdev/basic-site
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_TOKEN }}
-        tags: latest,0.1.8
+        platforms: linux/amd64,linux/arm64
+        tags: latest,0.1.9
