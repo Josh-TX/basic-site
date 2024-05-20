@@ -11,7 +11,7 @@ export class NotesComponent {
     save(authKey: string = "") {
         var filename = "mydata.json";
         var data = JSON.stringify({ name: "josh" });
-        console.log("hi")
+        console.log("test")
         this.trySave(filename, data, authKey).then(res => {
             if (res.status == 401){
                 var message = authKey 
