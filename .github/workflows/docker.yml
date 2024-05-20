@@ -1,0 +1,23 @@
+name: build and publish docker
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@main
+      with:
+        name: joshtxdev/my-expense-report
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        tags: latest,0.1.8
