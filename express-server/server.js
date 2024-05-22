@@ -18,29 +18,20 @@ try {
 }
 console.log(`Directory ${basepath} exists and is writable`)
 
-const READ_TOKEN = process.env.READ_TOKEN;
-const WRITE_TOKEN = process.env.WRITE_TOKEN;
+const AUTHKEY = process.env.AUTHKEY;
 
 app.use(express.static('public'));
 app.use(express.text());
 
-const checkWriteToken = (req, res, next) => {
+const checkToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    if (WRITE_TOKEN && authHeader !== WRITE_TOKEN) {
+    if (AUTHKEY && authHeader !== AUTHKEY) {
         return res.sendStatus(401);
     }
     next();
 };
 
-const checkReadToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    if (READ_TOKEN && authHeader !== READ_TOKEN) {
-        return res.sendStatus(401);
-    }
-    next();
-};
-
-app.post('/save', checkWriteToken, (req, res) => {
+app.post('/save', checkToken, (req, res) => {
     const filename = req.query.filename;
     if (!filename) {
         return res.sendStatus(400);
@@ -51,7 +42,7 @@ app.post('/save', checkWriteToken, (req, res) => {
     res.sendStatus(200);
 });
 
-app.get('/load', checkReadToken, (req, res) => {
+app.get('/load', (req, res) => {
     const filename = req.query.filename;
     if (!filename) {
         return res.sendStatus(400);

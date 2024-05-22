@@ -1,0 +1,32 @@
+name: Testing annotations
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: echo "Build successful"
+
+    - name: Add annotation
+      run: echo "::notice file=build.txt::Build completed successfully, view your site at https://example.com"
+  other-job:
+    runs-on: ubuntu-latest
+    environment:
+      name: release-url
+      url: https://github.com/Josh-TX/basic-site/releases/tag/v1.0.0
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: echo "Build successful"
