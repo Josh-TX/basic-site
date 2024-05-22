@@ -1,11 +1,19 @@
-name: Testing annotations
+name: Testing Stuff
 
 on:
   workflow_dispatch:
+    inputs:
+      SemVer:
+        description: 'Semantic Version of the release'
+        required: true
 
-permissions:
-  contents: write
-  
+env:
+  #these should match the output of the electron build
+  WIN_FILENAME: my-angular-app Setup ${{ github.event.inputs.SemVer }}.exe
+  WIN-P_FILENAME: my-angular-app ${{ github.event.inputs.SemVer }}.exe
+  LIN_FILENAME: my-angular-app-${{ github.event.inputs.SemVer }}.AppImage
+  MAC_FILENAME: my-angular-app-${{ github.event.inputs.SemVer }}-arm64.dmg
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,7 +23,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build
-      run: echo "Build successful"
+      run: echo "Build of ${{ env.MAC_FILENAME }} successful"
 
     - name: Add annotation
       run: echo "::notice file=build.txt::Build completed successfully, view your site at https://example.com"
@@ -29,4 +37,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build
-      run: echo "Build successful"
+      run: echo "Build of ${{ env.WIN_FILENAME }} success"
